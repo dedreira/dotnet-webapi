@@ -45,7 +45,9 @@ namespace dedreira.samples.webapi
             app.UseEndpoints(endpoints =>
             {                               
                 endpoints.MapControllers();
-                
+                endpoints.MapGet("/api/health",context => {
+                    return Task.FromResult(new OkResult());
+                });
             });
         }
     }
