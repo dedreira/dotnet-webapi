@@ -16,15 +16,10 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.101
-    - name: GitHub Script
-      uses: actions/github-script@0.9.0
-      with:
-        # The script to run
-        script: cd src/dedreira.samples.webapi   
+        dotnet-version: 3.1.101  
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore src/dedreira.samples.webapi
     - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet build  src/dedreira.samples.webapi --configuration Release --no-restore
+    #- name: Test
+    #  run: dotnet test --no-restore --verbosity normal
