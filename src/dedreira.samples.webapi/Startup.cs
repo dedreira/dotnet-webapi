@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.OpenApi.Models;
 namespace dedreira.samples.webapi
 {
     public class Startup
@@ -26,6 +26,14 @@ namespace dedreira.samples.webapi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSwaggerGen(s => {
+                s.SwaggerDoc("v1",
+                new OpenApiInfo{
+                    Title = "Sample Api template",
+                    Version = "1.0"                    
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,8 +44,14 @@ namespace dedreira.samples.webapi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
+            //app.UseHttpsRedirection();
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(s =>{
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample Api template V1.0");
+                s.RoutePrefix = string.Empty;
+            });
+            
             app.UseRouting();
 
             app.UseAuthorization();
@@ -49,6 +63,7 @@ namespace dedreira.samples.webapi
                     return Task.FromResult(new OkResult());
                 });
             });
+
         }
     }
 }
