@@ -43,8 +43,9 @@ namespace dedreira.samples.webapi
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
-            {
+            {                               
                 endpoints.MapControllers();
+                
             });
         }
     }
