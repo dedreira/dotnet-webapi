@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 3.1.101  
     - name: Install dependencies
-      run: dotnet restore src/dedreira.samples.webapi
+      run: dotnet restore src
     - name: Build
-      run: dotnet build  src/dedreira.samples.webapi --configuration Release --no-restore
-    #- name: Test
-    #  run: dotnet test --no-restore --verbosity normal
+      run: dotnet build  src --configuration Release --no-restore
+    - name: Test
+      run: dotnet test src --no-restore --verbosity normal
