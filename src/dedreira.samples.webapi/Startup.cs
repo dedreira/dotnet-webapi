@@ -26,7 +26,6 @@ namespace dedreira.samples.webapi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             services.AddSwaggerGen(s => {
                 s.SwaggerDoc("v1",
                 new OpenApiInfo{
