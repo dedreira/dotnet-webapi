@@ -1,0 +1,10 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "Daniel Edreira",
+    "classifications": [ "Web", "WebApi" ],
+    "identity": "dedreira.WebApiTemplate.CSharp",
+    "name": "ASP.NET Core Web API with tools",
+    "shortName": "d-webapi",
+    "sourceName": "dedreira.samples.webapi",
+    "preferNameDirectory": true
+}
