@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using dedreira.samples.webapi.Infrastructure.OpenApi;
 using dedreira.samples.webapi.Infrastructure.Options;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IServiceCollectionExtensions
@@ -39,9 +40,18 @@ namespace Microsoft.Extensions.DependencyInjection
                 },
             };
             options.AddSecurityDefinition("oauth2", oAuth2Scheme);
-                    options.AddSecurityRequirement(new OpenApiSecurityRequirement(){
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement(){
                         {oAuth2Scheme, new string[]{}}
-                    });                    
+                    });
+        });
+
+        public static IServiceCollection AddCustomApiVersioning(this IServiceCollection services) =>
+    services
+        .AddVersionedApiExplorer()
+        .AddApiVersioning(setup =>
+        {
+            setup.DefaultApiVersion = new ApiVersion(1, 0);
+            setup.AssumeDefaultVersionWhenUnspecified = true;
         });
     }
 }

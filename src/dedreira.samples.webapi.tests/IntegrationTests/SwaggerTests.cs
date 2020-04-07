@@ -36,7 +36,7 @@ namespace dedreira.samples.webapi.tests
         {
             // Arrange
             var client = factory.CreateClient();
-            var route = "/swagger/v1/swagger.json";
+            var route = "/swagger/1.0/swagger.json";
 
             // Act
             var response = await client.GetAsync(route);

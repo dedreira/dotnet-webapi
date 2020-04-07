@@ -35,8 +35,8 @@ namespace dedreira.samples.webapi.Infrastructure.OpenApi
                 Version = description.ApiVersion.ToString(),
                 Description = "",
                 Contact = new OpenApiContact() { Name = "", Email = "" },
-                TermsOfService = new System.Uri(string.Empty),
-                License = new OpenApiLicense() { Name = "", Url = new System.Uri(string.Empty) }
+                TermsOfService = new System.Uri("https://github.com/dedreira"),
+                License = new OpenApiLicense() { Name = "", Url = new System.Uri("https://github.com/dedreira") }
             };
 
             if (description.IsDeprecated)

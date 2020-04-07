@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 namespace dedreira.samples.webapi
 {
     public class Startup
@@ -26,17 +27,22 @@ namespace dedreira.samples.webapi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(s => {
-                s.SwaggerDoc("v1",
-                new OpenApiInfo{
-                    Title = "Sample Api template",
-                    Version = "1.0"                    
-                });
-            });
+            services.AddCustomApiVersioning();            
+            /*
+                .AddJsonFormatters(setup =>
+                {
+                    setup.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    setup.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    setup.NullValueHandling = NullValueHandling.Ignore;
+                })*/
+            services.AddVersionedApiExplorer();
+            services.AddOpenApi(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, 
+        IWebHostEnvironment env, 
+        IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -44,13 +50,14 @@ namespace dedreira.samples.webapi
             }
 
             //app.UseHttpsRedirection();
-            
+            /*
             app.UseSwagger();
             app.UseSwaggerUI(s =>{
                 s.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample Api template V1.0");
                 s.RoutePrefix = string.Empty;
             });
-            
+            */
+            app.UseOpenApi(provider);
             app.UseRouting();
 
             app.UseAuthorization();
@@ -62,7 +69,7 @@ namespace dedreira.samples.webapi
                     return Task.FromResult(new OkResult());
                 });
             });
-
+            app.UseOpenApi(provider);
         }
     }
 }
