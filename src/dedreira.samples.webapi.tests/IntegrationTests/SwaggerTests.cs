@@ -1,17 +1,18 @@
-using System;
+
 using Xunit;
-using dedreira.samples.webapi;
+
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Threading.Tasks;
+using FluentAssertions;
 namespace dedreira.samples.webapi.tests
 {
-    public class swagger_should
+    public class swagger_endpoint_should
     :IClassFixture<WebApplicationFactory<Startup>>
     {
         private readonly WebApplicationFactory<Startup> factory;
 
-        public swagger_should(WebApplicationFactory<Startup> factory)
+        public swagger_endpoint_should(WebApplicationFactory<Startup> factory)
         {
             this.factory = factory;
         }
@@ -28,7 +29,7 @@ namespace dedreira.samples.webapi.tests
 
             // Asert
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+                      
         }
 
         [Fact]
@@ -43,7 +44,7 @@ namespace dedreira.samples.webapi.tests
 
             // Asert
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Equals(HttpStatusCode.OK);  
         }
     }
 }

@@ -1,9 +1,10 @@
-using System;
+
 using Xunit;
-using dedreira.samples.webapi;
+
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Threading.Tasks;
+using FluentAssertions;
 namespace dedreira.samples.webapi.tests
 {
     public class health_endpoint_should
@@ -28,7 +29,7 @@ namespace dedreira.samples.webapi.tests
 
             // Asert
             response.EnsureSuccessStatusCode();
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            response.StatusCode.Should().Equals(HttpStatusCode.OK);
         }
     }
 }
