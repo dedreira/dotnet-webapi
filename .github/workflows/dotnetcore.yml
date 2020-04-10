@@ -23,6 +23,8 @@ jobs:
       run: dotnet build  src --configuration Release --no-restore
     - name: Test
       run: dotnet test src /p:CollectCoverage=true --no-restore --verbosity normal
+    - name: Check coverage file content
+      run: cat src/dedreira.samples.webapi.tests/coverage.opencover.xml
     - name: Upload Report
       env:
         CODECOV_TOKEN: "07f03a84-da0d-4a6a-bde6-10e27073442b"
