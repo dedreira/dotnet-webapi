@@ -2,4 +2,5 @@
 \obj
 obj\
 bin\
-
+TestResults
+coverage.opencover.xml
