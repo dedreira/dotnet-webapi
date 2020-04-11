@@ -26,16 +26,8 @@ namespace dedreira.samples.webapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddCustomApiVersioning();            
-            /*
-                .AddJsonFormatters(setup =>
-                {
-                    setup.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    setup.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    setup.NullValueHandling = NullValueHandling.Ignore;
-                })*/
-            services.AddVersionedApiExplorer();
+            services.AddControllers();            
+            services.AddCustomApiVersioning();                      
             services.AddOpenApi(Configuration);
         }
 
@@ -49,27 +41,17 @@ namespace dedreira.samples.webapi
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
-            /*
-            app.UseSwagger();
-            app.UseSwaggerUI(s =>{
-                s.SwaggerEndpoint("/swagger/v1/swagger.json", "Sample Api template V1.0");
-                s.RoutePrefix = string.Empty;
-            });
-            */
+            app.UseHttpsRedirection();            
             app.UseOpenApi(provider);
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {                               
                 endpoints.MapControllers();
                 endpoints.MapGet("/api/health",context => {
                     return Task.FromResult(new OkResult());
                 });
-            });
-            app.UseOpenApi(provider);
+            });            
         }
     }
 }

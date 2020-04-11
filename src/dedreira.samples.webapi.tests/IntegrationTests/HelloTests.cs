@@ -25,7 +25,7 @@ namespace dedreira.samples.webapi.tests
         public async Task greet_user_who_invokes_endpoint(string user)
         {
             string expected = $"Hello {user}";
-            string route = $"api/hello?name={user}";
+            string route = $"api/v1/hello?name={user}";
             var client = this.factory.CreateClient();
 
             var result = await client.GetAsync(route);

@@ -5,11 +5,11 @@ namespace dedreira.samples.webapi.Controllers
 {
     [ApiController]
     [Produces(MediaTypeNames.Application.Json)]
-    [Route("/api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("/api/v{version:apiVersion}/[controller]")]
     public class HelloController: ControllerBase
     {
-        [HttpGet]        
-        [ApiVersion("1.0")]
+        [HttpGet]                
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult SayHello(string name)
         {

@@ -7,6 +7,7 @@ using dedreira.samples.webapi.Infrastructure.OpenApi;
 using dedreira.samples.webapi.Infrastructure.Options;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IServiceCollectionExtensions
@@ -18,9 +19,9 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             options.DescribeAllParametersInCamelCase();
             options.CustomSchemaIds(t => t.FullName);
-            options.OperationFilter<AuthorizeCheckOperationFilter>();
-            options.OperationFilter<ApiVersionOperationFilter>();
-
+            options.OperationFilter<AuthorizeCheckOperationFilter>();            
+            options.OperationFilter<RemoveVersionFromParameter>();
+            options.DocumentFilter<ReplaceVersionInRoute>();
             var jwtBearerOptions = configuration.GetSection<JwtBearer>();
             var oAuth2Scheme = new OpenApiSecurityScheme
             {
@@ -46,8 +47,8 @@ namespace Microsoft.Extensions.DependencyInjection
         });
 
         public static IServiceCollection AddCustomApiVersioning(this IServiceCollection services) =>
-    services
-        .AddVersionedApiExplorer()
+        services
+        .AddVersionedApiExplorer(options => options.SubstituteApiVersionInUrl = true)
         .AddApiVersioning(setup =>
         {
             setup.DefaultApiVersion = new ApiVersion(1, 0);
