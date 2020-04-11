@@ -12,23 +12,28 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Hellang.Middleware.ProblemDetails;
 namespace dedreira.samples.webapi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration,
+                        IWebHostEnvironment environment)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
+            this.environment = environment;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration configuration { get; }
+        private IWebHostEnvironment environment {get;}
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)        
         {
+            services.AddCustomProblemDetails(environment);
             services.AddControllers();            
             services.AddCustomApiVersioning();                      
-            services.AddOpenApi(Configuration);
+            services.AddOpenApi(configuration);            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,11 +41,13 @@ namespace dedreira.samples.webapi
         IWebHostEnvironment env, 
         IApiVersionDescriptionProvider provider)
         {
+            /*
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            */
+            app.UseProblemDetails(); 
             app.UseHttpsRedirection();            
             app.UseOpenApi(provider);
             app.UseRouting();
@@ -51,7 +58,8 @@ namespace dedreira.samples.webapi
                 endpoints.MapGet("/api/health",context => {
                     return Task.FromResult(new OkResult());
                 });
-            });            
+            });  
+                     
         }
     }
 }

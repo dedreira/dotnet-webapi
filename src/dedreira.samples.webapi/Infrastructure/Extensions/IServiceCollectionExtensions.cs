@@ -8,12 +8,16 @@ using dedreira.samples.webapi.Infrastructure.Options;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Hosting;
+using Hellang.Middleware.ProblemDetails;
+using System;
+using Microsoft.AspNetCore.Http;
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IServiceCollectionExtensions
     {
         public static IServiceCollection AddOpenApi(this IServiceCollection services, IConfiguration configuration) =>
-    services
+        services
         .AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>()
         .AddSwaggerGen(options =>
         {
@@ -46,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     });
         });
 
-        public static IServiceCollection AddCustomApiVersioning(this IServiceCollection services) =>
+        public static IServiceCollection AddCustomApiVersioning(this IServiceCollection services) =>        
         services
         .AddVersionedApiExplorer(options => options.SubstituteApiVersionInUrl = true)
         .AddApiVersioning(setup =>
@@ -54,5 +58,16 @@ namespace Microsoft.Extensions.DependencyInjection
             setup.DefaultApiVersion = new ApiVersion(1, 0);
             setup.AssumeDefaultVersionWhenUnspecified = true;
         });
-    }
+
+        public static IServiceCollection AddCustomProblemDetails(
+            this IServiceCollection services,
+             IWebHostEnvironment environment
+            ) => 
+                services
+                .AddProblemDetails(configure =>
+                {
+                    configure.IncludeExceptionDetails = (ctx,ex) => environment.EnvironmentName == "Development";
+                    configure.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
+                });
+    }    
 }
