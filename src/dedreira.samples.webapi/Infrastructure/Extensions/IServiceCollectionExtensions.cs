@@ -34,8 +34,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     Implicit = new OpenApiOAuthFlow()
                     {
-                        AuthorizationUrl = new System.Uri($"{jwtBearerOptions.Authority}/connect/authorize"),
-                        TokenUrl = new System.Uri($"{jwtBearerOptions.Authority}/connect/token"),
+                        AuthorizationUrl = new System.Uri($"{jwtBearerOptions.AuthorizeEndpoint}"),
+                        TokenUrl = new System.Uri($"{jwtBearerOptions.TokenEndpoint}"),
                         Scopes = new Dictionary<string, string>()
                 {
                             { "scope", "Scope Description" }
