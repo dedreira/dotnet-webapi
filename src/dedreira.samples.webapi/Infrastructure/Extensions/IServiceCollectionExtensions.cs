@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Hosting;
 using Hellang.Middleware.ProblemDetails;
 using System;
 using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Reflection;
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class IServiceCollectionExtensions
@@ -48,6 +50,10 @@ namespace Microsoft.Extensions.DependencyInjection
             options.AddSecurityRequirement(new OpenApiSecurityRequirement(){
                         {oAuth2Scheme, new string[]{}}
                     });
+            // Set the comments path for the Swagger JSON and UI.
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            options.IncludeXmlComments(xmlPath);
         });
 
         public static IServiceCollection AddCustomApiVersioning(this IServiceCollection services) =>        
