@@ -33,7 +33,8 @@ namespace dedreira.samples.webapi
             services.AddCustomProblemDetails(environment);
             services.AddControllers();            
             services.AddCustomApiVersioning();                      
-            services.AddOpenApi(configuration);            
+            services.AddOpenApi(configuration);   
+            services.AddHealthChecks();         
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,12 +42,6 @@ namespace dedreira.samples.webapi
         IWebHostEnvironment env, 
         IApiVersionDescriptionProvider provider)
         {
-            /*
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            */
             app.UseProblemDetails(); 
             app.UseHttpsRedirection();            
             app.UseOpenApi(provider);
@@ -55,9 +50,7 @@ namespace dedreira.samples.webapi
             app.UseEndpoints(endpoints =>
             {                               
                 endpoints.MapControllers();
-                endpoints.MapGet("/api/health",context => {
-                    return Task.FromResult(new OkResult());
-                });
+                endpoints.MapHealthChecks("/api/health");
             });  
                      
         }
